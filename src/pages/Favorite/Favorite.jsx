@@ -6,9 +6,8 @@ import Main from '../../layout/Main';
 import Footer from '../../layout/Footer';
 import Card from '../../components/Card';
 import ButtonLike from '../../ui/ButtonLike';
-import ButtonDislike from '../../ui/ButtonDislike';
 
-export const Favorite = ({ likedCards, handleButtonClick, favoriteStudents }) => {
+export const Favorite = ({ likedCards, toggleLike, favoriteStudents }) => {
   return (
     <>
       {/* Верхний блок страницы */}
@@ -33,11 +32,10 @@ export const Favorite = ({ likedCards, handleButtonClick, favoriteStudents }) =>
             alive={student.alive}
           >
             {/* Отобразить кнопку "Like" или "Dislike" в зависимости от состояния */}
-            {likedCards.includes(student.id) ? (
-              <ButtonLike handleButtonClick={() => handleButtonClick(student.id)} />
-            ) : (
-              <ButtonDislike handleButtonClick={() => handleButtonClick(student.id)} />
-            )}
+            <ButtonLike
+              toggleLike={() => toggleLike(student.id)}
+              isLiked={likedCards.includes(student.id)}
+            />
           </Card>
         ))}
       </Main>

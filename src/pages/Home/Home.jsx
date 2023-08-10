@@ -8,16 +8,15 @@ import Select from '../../ui/Select';
 import Loader from '../../ui/Loader';
 import Card from '../../components/Card';
 import ButtonLike from '../../ui/ButtonLike';
-import ButtonDislike from '../../ui/ButtonDislike';
 import ButtonLikeList from '../../ui/ButtonLikeList';
 import { Link } from 'react-router-dom';
 
-export const Home = ({ handleInput, house, handleHouseChange, selectedHouse, isLoading, filteredData, likedCards, handleButtonClick }) => {
+export const Home = ({ handleInputSearch, house, handleHouseChange, selectedHouse, isLoading, filteredData, likedCards, toggleLike }) => {
     return (
         <>
             {/* Верхний блок страницы */}
             <Header>
-                <Input handleInput={handleInput} />
+                <Input handleInputSearch={handleInputSearch} />
                 <Select house={house} handleHouseChange={handleHouseChange} selectedHouse={selectedHouse} />
             </Header>
             <Borderline />
@@ -38,11 +37,10 @@ export const Home = ({ handleInput, house, handleHouseChange, selectedHouse, isL
                         alive={student.alive}
                     >
                         {/* Отобразить кнопку "Like" или "Dislike" в зависимости от состояния */}
-                        {likedCards.includes(student.id) ? (
-                            <ButtonLike handleButtonClick={() => handleButtonClick(student.id)} />
-                        ) : (
-                            <ButtonDislike handleButtonClick={() => handleButtonClick(student.id)} />
-                        )}
+                        <ButtonLike
+                            toggleLike={() => toggleLike(student.id)}
+                            isLiked={likedCards.includes(student.id)}
+                        />
                     </Card>
                 ))}
             </Main>

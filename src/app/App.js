@@ -6,15 +6,18 @@ import Home from '../pages/Home';
 import Favorite from '../pages/Favorite';
 
 function App() {
+  const likedCard = JSON.parse(localStorage.getItem("likedCards") ?? []); // Получение избранных карт из localStorage
+  
+  const [likedCards, setLikedCards] = useState(likedCard); // Список избранных карт
   const [isLoading, setLoading] = useState(false); // Состояние загрузки laoding
   const [data, setData] = useState([]); // Состояние данные персонажей
   const [inputValue, setInputValue] = useState(''); // Значение ввода поиска
   const [house, setHouse] = useState([]); // Список факультетов
   const [selectedHouse, setSelectedHouse] = useState(''); // Выбранный факультет
-  const [likedCards, setLikedCards] = useState([]); // Список избранных карт
+
 
   // Обработчик ввода текста в поле поиска
-  const handleInput = (event) => {
+  const handleInputSearch = (event) => {
     setInputValue(event.target.value);
   }
 
@@ -25,7 +28,7 @@ function App() {
   }
 
   // Обработчик нажатия на кнопку "Like"
-  const handleButtonClick = (id) => {
+  const toggleLike = (id) => {
     setLikedCards(prevLikedCards => {
       if (prevLikedCards.includes(id)) {
         return prevLikedCards.filter(cardId => cardId !== id);
@@ -34,14 +37,6 @@ function App() {
       }
     });
   }
-
-  // Получение избранных карт из localStorage
-  useEffect(() => {
-    const storedLikedCards = localStorage.getItem('likedCards');
-    if (storedLikedCards) {
-      setLikedCards(JSON.parse(storedLikedCards));
-    }
-  }, []);
 
   // Сохранение избранных карт в localStorage
   useEffect(() => {
@@ -90,14 +85,14 @@ function App() {
     {
       path: '/',
       element: <Home
-        handleInput={handleInput}
+        handleInputSearch={handleInputSearch}
         house={house}
         handleHouseChange={handleHouseChange}
         selectedHouse={selectedHouse}
         isLoading={isLoading}
         filteredData={filteredData}
         likedCards={likedCards}
-        handleButtonClick={handleButtonClick}
+        toggleLike={toggleLike}
       />
     },
     {
@@ -105,10 +100,9 @@ function App() {
       element: <Favorite
         likedCards={likedCards}
         favoriteStudents={favoriteStudents}
-        handleButtonClick={handleButtonClick} />
+        toggleLike={toggleLike} />
     }
   ])
-
 
   // Возвращение компонента с маршрутами
   return (
