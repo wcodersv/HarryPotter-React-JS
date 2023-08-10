@@ -1,0 +1,17 @@
+.input-name {
+    margin-right: 20px;
+}
+
+#name {
+    width: 452px;
+    box-sizing: border-box;
+    color: #152536;
+}
+
+#name::placeholder {
+    color: var(--secondary-light-color, #abb5be);
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+}

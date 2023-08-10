@@ -1,0 +1,13 @@
+#house {
+    width: 216px;
+    box-sizing: border-box;
+}
+
+#house option {
+    color: #152536;
+}
+
+#house:invalid,
+#house option[value=""] {
+    color: #abb5be;
+}
