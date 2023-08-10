@@ -15,14 +15,17 @@ import { Link } from 'react-router-dom';
 export const Home = ({ handleInput, house, handleHouseChange, selectedHouse, isLoading, filteredData, likedCards, handleButtonClick }) => {
     return (
         <>
+            {/* Верхний блок страницы */}
             <Header>
                 <Input handleInput={handleInput} />
                 <Select house={house} handleHouseChange={handleHouseChange} selectedHouse={selectedHouse} />
             </Header>
             <Borderline />
+            {/* Показать загрузчик, если данные загружаются */}
             {isLoading && <Loader />}
-
+            {/* Главная часть страницы */}
             <Main>
+                {/* Отобразить карточки персонажей */}
                 {filteredData.map(student => (
                     <Card
                         key={student.id}
@@ -34,6 +37,7 @@ export const Home = ({ handleInput, house, handleHouseChange, selectedHouse, isL
                         wand={student.wand}
                         alive={student.alive}
                     >
+                        {/* Отобразить кнопку "Like" или "Dislike" в зависимости от состояния */}
                         {likedCards.includes(student.id) ? (
                             <ButtonLike handleButtonClick={() => handleButtonClick(student.id)} />
                         ) : (
@@ -42,7 +46,9 @@ export const Home = ({ handleInput, house, handleHouseChange, selectedHouse, isL
                     </Card>
                 ))}
             </Main>
+            {/* Кнопка для перехода к избранным персонажам */}
             <Link to="/favorite"><ButtonLikeList /></Link>
+            {/* Нижний блок страницы */}
             <Footer />
         </>
     )

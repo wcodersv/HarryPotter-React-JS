@@ -6,12 +6,12 @@ import Home from '../pages/Home';
 import Favorite from '../pages/Favorite';
 
 function App() {
-  const [isLoading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const [house, setHouse] = useState([]);
-  const [selectedHouse, setSelectedHouse] = useState('');
-  const [likedCards, setLikedCards] = useState([]);
+  const [isLoading, setLoading] = useState(false); // Состояние загрузки laoding
+  const [data, setData] = useState([]); // Состояние данные персонажей
+  const [inputValue, setInputValue] = useState(''); // Значение ввода поиска
+  const [house, setHouse] = useState([]); // Список факультетов
+  const [selectedHouse, setSelectedHouse] = useState(''); // Выбранный факультет
+  const [likedCards, setLikedCards] = useState([]); // Список избранных карт
 
   // Обработчик ввода текста в поле поиска
   const handleInput = (event) => {
@@ -22,34 +22,20 @@ function App() {
   const handleHouseChange = (event) => {
     const selectedHouse = event.target.value;
     setSelectedHouse(selectedHouse);
-
-    if (selectedHouse !== '-- Choose one --') {
-      const updatedHouseList = [selectedHouse, ...house.filter(h => h !== selectedHouse)];
-      setHouse(updatedHouseList);
-    }
   }
 
-
-
-
-
+  // Обработчик нажатия на кнопку "Like"
   const handleButtonClick = (id) => {
-    if (likedCards.includes(id)) {
-      setLikedCards(likedCards.filter(cardId => cardId !== id));
-    } else {
-      setLikedCards([...likedCards, id]);
-
-    }
+    setLikedCards(prevLikedCards => {
+      if (prevLikedCards.includes(id)) {
+        return prevLikedCards.filter(cardId => cardId !== id);
+      } else {
+        return [...prevLikedCards, id];
+      }
+    });
   }
 
-  const filteredData = useMemo(() => {
-    return data.filter(
-      (student) =>
-        student.name.toLowerCase().includes(inputValue.toLowerCase()) &&
-        (!selectedHouse || student.house === selectedHouse)
-    );
-  }, [data, inputValue, selectedHouse]);
-
+  // Получение избранных карт из localStorage
   useEffect(() => {
     const storedLikedCards = localStorage.getItem('likedCards');
     if (storedLikedCards) {
@@ -57,12 +43,12 @@ function App() {
     }
   }, []);
 
-
+  // Сохранение избранных карт в localStorage
   useEffect(() => {
     localStorage.setItem('likedCards', JSON.stringify(likedCards));
   }, [likedCards]);
 
-
+  //Загрузка данных с сервера
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -84,11 +70,22 @@ function App() {
     fetchCards();
   }, []);
 
+  // Создание мемоизированного вычисления отфильтрованных данных на основе ввода и выбранного факультета.
+  const filteredData = useMemo(() => {
+    return data.filter(
+      (student) =>
+        student.name.toLowerCase().includes(inputValue.toLowerCase()) &&
+        (!selectedHouse || student.house === selectedHouse)
+    );
+  }, [data, inputValue, selectedHouse]);
 
-  const favoriteStudents = data.filter(student => likedCards.includes(student.id));
+  // Фильтрация избранных студентов
+  const favoriteStudents = useMemo(() => {
+    return data.filter(student => likedCards.includes(student.id));
+  }, [data, likedCards]);
 
 
-
+  // Создание маршрутов для роутинга
   const routers = createBrowserRouter([
     {
       path: '/',
@@ -113,6 +110,7 @@ function App() {
   ])
 
 
+  // Возвращение компонента с маршрутами
   return (
     <>
       <RouterProvider router={routers} />
