@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import './styles/App.css';
 
 import Home from '../pages/Home';
@@ -81,7 +81,7 @@ function App() {
 
 
   // Создание маршрутов для роутинга
-  const routers = createBrowserRouter([
+  const routers = createHashRouter([
     {
       path: '/',
       element: <Home
@@ -93,7 +93,7 @@ function App() {
         filteredData={filteredData}
         likedCards={likedCards}
         toggleLike={toggleLike}
-      />
+      />,      
     },
     {
       path: '/favorite',
