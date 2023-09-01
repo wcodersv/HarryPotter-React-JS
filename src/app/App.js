@@ -6,7 +6,7 @@ import Home from '../pages/Home';
 import Favorite from '../pages/Favorite';
 
 function App() {
-  const likedCard = JSON.parse(localStorage.getItem("likedCards") ?? []); // Получение избранных карт из localStorage
+  const likedCard = JSON.parse(localStorage.getItem("likedCards") ?? "[]"); // Получение избранных карт из localStorage
   
   const [likedCards, setLikedCards] = useState(likedCard); // Список избранных карт
   const [isLoading, setLoading] = useState(false); // Состояние загрузки laoding
